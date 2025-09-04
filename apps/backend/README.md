@@ -5,6 +5,8 @@ npm install nodemon typescript @types/express ts-node --dev
 npx tsc --init
 npm i mongoose dotenv
 npm i -D @types/node
+npm install jsonwebtoken
+npm install --save-dev @types/jsonwebtoken
 ```
 
 
