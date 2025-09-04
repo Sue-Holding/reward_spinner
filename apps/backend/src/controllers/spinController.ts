@@ -1,13 +1,17 @@
 import { Request, Response } from "express";
+import { AuthRequest } from "../middleware/authMiddleware";
 import Seller from "../models/Seller";
 import Order from "../models/Order";
 import Spin from "../models/Spin";
 
 // reward from a spin
-export const spinReward = async (req: Request, res: Response) => {
+export const spinReward = async (req: AuthRequest, res: Response) => {
     try {
-        const { sellerId, orderNumber } = req.body;
+        const sellerId = req.seller?.sellerId;
+        const { orderNumber } = req.body;
 
+        if (!sellerId) return res.status(401).json({ message: "Unauthorized" });
+        
         // validate the seller
         const seller = await Seller.findOne({ sellerId });
         if (!seller || seller.spins <=0 ) {
@@ -54,9 +58,11 @@ export const spinReward = async (req: Request, res: Response) => {
 };
 
 // get spin history
-export const getSpins = async (req: Request, res: Response) => {
+export const getSpins = async (req: AuthRequest, res: Response) => {
     try {
-        const {sellerId } = req.params;
+        // const {sellerId } = req.params;
+        const sellerId = req.seller?.sellerId;
+        if (!sellerId) return res.status(401).json({ message: "Unauthorized" });
 
         // get all spins for the sellers, newest first
         const spins = await Spin.find({ sellerId }).sort({ spunAt: -1 });

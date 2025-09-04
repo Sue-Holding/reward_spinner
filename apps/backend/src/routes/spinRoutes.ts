@@ -5,6 +5,6 @@ import { authMiddleware } from "../middleware/authMiddleware";
 const router = Router();
 
 router.post("/", authMiddleware, spinReward);       // POST /spins
-router.get("/:sellerId", authMiddleware, getSpins); // GET /spins/:sellerId
+router.get("/", authMiddleware, getSpins); // GET /spins/:sellerId
 
 export default router;
