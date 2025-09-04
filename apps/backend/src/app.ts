@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import cors from "cors";
 import authRoutes from "./routes/authRoutes";
 import orderRoutes from "./routes/orderRoutes";
 import spinRoutes from "./routes/spinRoutes";
@@ -7,8 +8,10 @@ const app = express();
 
 app.use(express.json());
 
-
-// add cors to frontend later !!!
+app.use(cors({
+    origin: "http://localhost:5173", //frontend server
+    credentials: true,
+}));
 
 app.use("/auth", authRoutes);
 app.use("/orders", orderRoutes);
