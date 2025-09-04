@@ -8,20 +8,26 @@ export const spinReward = async (req: Request, res: Response) => {
     try {
         const { sellerId, orderNumber } = req.body;
 
-        // valid the seller
-        // const seller = await Seller.findOne({ sellerId });
-        // if (!seller) {
-        //     return res.status(404).json({ message: "Seller not found!" });
-        // }
+        // validate the seller
         const seller = await Seller.findOne({ sellerId });
         if (!seller || seller.spins <=0 ) {
-            return res.status(400).json({ message: "No spins left!" });
+            return res.
+            status(400).json({ message: "No spins left!" });
         }
 
-        // check if a spin exists and is valid
+        // check if an order exists
         const order = await Order.findOne({ sellerId, orderNumber });
         if (!order) {
-            return res.status(400).json({ message: "invalid order!" });
+            return res.
+            status(400).json({ message: "invalid order!" });
+        }
+        
+        // now to check if that order already has a spin on it
+        const existingSpin = await Spin.findOne({ sellerId, orderNumber });
+        if (existingSpin) {
+            return res
+            .status(400)
+            .json({ message: "This order has already been used for a spin! Sorry!" });
         }
         
         // Fake reward logic
@@ -42,7 +48,8 @@ export const spinReward = async (req: Request, res: Response) => {
             availableSpins: seller.spins
         });
     } catch (err) {
-        res.status(500).json({ message: "Server error", error: err });
+        res.status(500)
+        .json({ message: "Server error", error: err });
     }
 };
 
@@ -54,6 +61,7 @@ export const getSpins = async (req: Request, res: Response) => {
 
         res.json(spins);
     } catch (err) {
-        res.status(500).json({ message: "server error", error: err});
+        res.status(500)
+        .json({ message: "server error", error: err});
     }
 };

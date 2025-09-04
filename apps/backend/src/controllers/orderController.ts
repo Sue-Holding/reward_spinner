@@ -7,12 +7,6 @@ export const addOrder = async (req: Request, res: Response) => {
     try {
         const { sellerId, orderNumber, amount } = req.body;
 
-        // check if i have a seller in db - recheck this
-        // const seller = await Seller.findOne({ sellerId });
-        // if (!seller) {
-        //     return res.status(404).json({ message: "Seller not found "});
-        // }
-
         // to save an order
         const order = new Order({ sellerId, orderNumber, amount });
         await order.save();
@@ -26,18 +20,9 @@ export const addOrder = async (req: Request, res: Response) => {
              order, 
              availableSpins: seller?.spins ?? 0, 
          });
-        // add spins valid on the new order
-        // seller.spins += 1;
-        // await seller.save();
-
-        // res.status(201).json({ 
-        //     message: "Order added", 
-        //     order, 
-        //     spins: seller.spins 
-        // });
-
     } catch (err) {
-        res.status(500).json({ message: "Server error", error: err });
+        res.status(500)
+        .json({ message: "Server error", error: err });
     }
 };
 
@@ -48,6 +33,7 @@ export const getOrders = async (req: Request, res: Response) => {
         const orders = await Order.findOne({ sellerId });
         res.json(orders);
     } catch (err) {
-        res.status(500).json({ message: "Server error", error: err });
+        res.status(500)
+        .json({ message: "Server error", error: err });
     }
 };

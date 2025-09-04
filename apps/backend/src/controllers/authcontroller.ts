@@ -9,7 +9,9 @@ export const login = async (req: Request, res: Response) => {
     const seller = await Seller.findOne({ sellerId });
 
     if (!seller || seller.password !== password) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res
+      .status(401)
+      .json({ message: "Invalid credentials" });
     }
 
     // create jwt token
@@ -26,7 +28,9 @@ export const login = async (req: Request, res: Response) => {
       token,
     });
   } catch (err) {
-    res.status(500).json({ message: "Server error", error: err });
+    res
+    .status(500)
+    .json({ message: "Server error", error: err });
   }
 };
 
