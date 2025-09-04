@@ -57,9 +57,35 @@ export const spinReward = async (req: Request, res: Response) => {
 export const getSpins = async (req: Request, res: Response) => {
     try {
         const {sellerId } = req.params;
-        const spins = await Spin.findOne({ sellerId }).sort({ spunAt: -1 });
 
-        res.json(spins);
+        // get all spins for the sellers, newest first
+        const spins = await Spin.find({ sellerId }).sort({ spunAt: -1 });
+
+        // if no spin made yet
+        if (!spins || spins.length === 0) {
+            return res.json({
+                message: "No spins found for this seller yet",
+                spins: [],
+                totalRewards: 0,
+                totalSpins: 0,
+                availableSpins: 0,        
+            });
+        }
+
+        // rewards total
+        const totalRewards = spins.reduce((sum, spin ) => sum + spin.reward, 0);
+        const totalSpins = spins.length;
+
+        // get the sellers avail spins
+        const seller = await Seller.findOne({ sellerId });
+        const availableSpins = seller?.spins ?? 0;
+
+        res.json({
+            spins,
+            totalRewards,
+            totalSpins,
+            availableSpins,
+        });
     } catch (err) {
         res.status(500)
         .json({ message: "server error", error: err});
