@@ -7,6 +7,9 @@ const app = express();
 
 app.use(express.json());
 
+
+// add cors to frontend later !!!
+
 app.use("/auth", authRoutes);
 app.use("/orders", orderRoutes);
 app.use("/spins", spinRoutes);
