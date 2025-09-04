@@ -1,0 +1,10 @@
+# Node packages
+node_modules/
+
+# Vite build & cache
+dist/
+.vite/
+
+# OS och editor filer
+.DS_Store
+*.log
