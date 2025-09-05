@@ -14,6 +14,15 @@ interface Order {
 
 const history: Order[] = [];
 
+// add welcome seller with name
+const welcomeMsg = document.getElementById("welcome-msg") as HTMLHeadingElement;
+
+// show sellerId
+const sellerName = localStorage.getItem("sellerName");
+if (sellerName) {
+  welcomeMsg.textContent = `Welcome, ${sellerName}!`;
+}
+
 // Lägg till ny order
 orderForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -61,3 +70,21 @@ spinBtn.addEventListener("click", () => {
     renderHistory();
   }, 4000); // matcha CSS transition duration
 });
+
+const logoutBtn = document.getElementById("logout-btn") as HTMLButtonElement;
+
+// logout handler
+logoutBtn.addEventListener("click", () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("sellerId");
+  window.location.href = "/login.html"; // back to login
+});
+
+//  check if logged in at page load
+window.addEventListener("DOMContentLoaded", () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    window.location.href = "/src/login.html"; // block access if not logged in
+  }
+});
+

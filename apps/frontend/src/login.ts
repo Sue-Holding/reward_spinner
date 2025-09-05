@@ -1,22 +1,35 @@
 const form = document.getElementById("login-form") as HTMLFormElement;
 const errorMsg = document.getElementById("error") as HTMLParagraphElement;
 
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const username = (document.getElementById("username") as HTMLInputElement).value;
+  const sellerId = (document.getElementById("username") as HTMLInputElement).value;
   const password = (document.getElementById("password") as HTMLInputElement).value;
 
-  // Dummy inloggning (hårdkodad användare)
-  if (username === "admin" && password === "1234") {
-    console.log("Login successful!");
+  try {
+    const res = await fetch("http://localhost:3000/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sellerId, password })
+    });
 
-    // Spara enkel flagga i localStorage
-    localStorage.setItem("loggedIn", "true");
+    if (!res.ok) {
+      // errorMsg.style.display = "block";
+      return;
+    }
 
-    // Redirect till dashboard
-    window.location.href = "/src/dashboard.html";
-  } else {
-    errorMsg.style.display = "block";
+    const data = await res.json();
+
+    // this save the jwt token
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("sellerId", data.sellerId);
+    localStorage.setItem("sellerName", data.name);
+
+    // redirect to dashboard after successful login
+    window.location.href = "/dashboard.html";
+  } catch (err) {
+    console.error(err);
+
   }
 });
