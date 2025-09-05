@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      display: flex;
+      gap: 50px;
+      margin-top: 50px;
+    }
+
+    .panel {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .left-panel {
+      width: 300px;
+    }
+
+    .right-panel {
+      width: 300px;
+      text-align: center;
+    }
+
+    h2 { margin-top: 0; }
+
+    input, button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 10px;
+      border: none;
+      background: #4CAF50;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover { background: #45a049; }
+
+    ul {
+      padding-left: 20px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    /* Spinnhjul */
+    #wheel-container {
+  position: relative;
+  margin: 0 auto 20px auto;
+  width: 200px;
+  height: 220px; /* lite extra höjd för pilen */
+}
+
+#wheel {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 10px solid #ccc;
+  background: conic-gradient(
+    #f39c12 0 20%,
+    #f1c40f 20% 40%,
+    #f39c12 40% 60%,
+    #f1c40f 60% 80%,
+    #f39c12 80% 100%
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 18px;
+  transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+#pointer {
+  position: absolute;
+  top: 100%;              /* längst ner på container */
+  left: 50%;              
+  transform: translate(-50%, -50%); /* centrerar horisontellt */
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 25px solid red; /* pil pekar uppåt */
+  z-index: 10;
+}
+
+
+
+    #result {
+      font-weight: bold;
+      margin-top: 10px;
+      color: #2c3e50;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="panel left-panel">
+      <h2>Historik</h2>
+      <ul id="history"></ul>
+
+      <h2>Ny order</h2>
+      <form id="order-form">
+        <input type="text" id="order-name" placeholder="Ordernamn" required />
+        <button type="submit">Lägg till order</button>
+      </form>
+    </div>
+
+    <div class="panel right-panel">
+      <h2>Spinnhjul</h2>
+      <div id="wheel-container">
+        <div id="wheel">SPIN</div>
+        <div id="pointer"></div>
+      </div>
+      <button id="spin-btn">Spinn hjulet</button>
+      <div id="result"></div>
+    </div>
+  </div>
+
+  <script type="module" src="./dashboard.ts"></script>
+</body>
+</html>
