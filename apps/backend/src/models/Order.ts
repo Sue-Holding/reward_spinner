@@ -5,6 +5,7 @@ export interface IOrder extends Document {
     orderNumber: string;
     amount: number;
     createdAt: Date;
+    spinned: boolean;
 }
 
 const OrderSchema: Schema = new Schema({
@@ -12,6 +13,7 @@ const OrderSchema: Schema = new Schema({
     orderNumber: { type: String, required: true },
     amount: { type: Number, required: true },
     createdAt: { type: Date, default: Date.now },
+    spinned: { type: Boolean, default: false },
 });
 
 const Order = mongoose.model<IOrder>("Order", OrderSchema);

@@ -37,6 +37,9 @@ export const spinReward = async (req: Request, res: Response) => {
         const spin = new Spin({ sellerId, orderNumber, reward });
         await spin.save();
 
+        // mark the order as spun
+        await Order.updateOne({ sellerId, orderNumber }, { $set: { spinned: true } });
+
         // to descrease seller spins count
         seller.spins -=1;
         await seller.save();

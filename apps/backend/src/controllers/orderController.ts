@@ -30,7 +30,7 @@ export const addOrder = async (req: Request, res: Response) => {
 export const getOrders = async (req: Request, res: Response) => {
     try {
         const { sellerId } = req.params;
-        const orders = await Order.findOne({ sellerId });
+        const orders = await Order.find({ sellerId });
         res.json(orders);
     } catch (err) {
         res.status(500)
